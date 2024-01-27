@@ -1,12 +1,11 @@
 public class SwimmingAnimal extends Animal {
     @Override
     public void swim() {
-        System.out.println("Животное плывет");
+        System.out.println("Животное плавает");
     }
 
-    // Дополнительно переопределяем метод fly
     @Override
-    public void fly() {
-        System.out.println("Животное не может летать");
+    public void run() {
+        System.out.println("Плавающие животные не могут бегать");
     }
 }
