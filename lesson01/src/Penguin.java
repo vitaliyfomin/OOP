@@ -1,4 +1,4 @@
-public class Penguin extends Animal {
+public class Penguin extends DivingAnimal {
     @Override
     public void swim() {
         System.out.println("Пингвин плавает");
