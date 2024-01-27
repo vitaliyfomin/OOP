@@ -4,9 +4,7 @@ public class Main {
         FlyingAnimal bird = new FlyingAnimal();
         SwimmingAnimal fish = new SwimmingAnimal();
         RunningAnimal cheetah = new RunningAnimal();
-        DivingAnimal penguin = new DivingAnimal();
-        Duck duck = new Duck();
-        Penguin penguinInstance = new Penguin();
+        Penguin penguin = new Penguin();
 
         genericAnimal.toGo();
         genericAnimal.fly();
@@ -42,19 +40,5 @@ public class Main {
         penguin.run();
         penguin.quack();
         penguin.dive();
-
-        duck.toGo();
-        duck.fly();
-        duck.swim();
-        duck.run();
-        duck.quack();
-        duck.dive();
-
-        penguinInstance.toGo();
-        penguinInstance.fly();
-        penguinInstance.swim();
-        penguinInstance.run();
-        penguinInstance.quack();
-        penguinInstance.dive();
     }
 }
