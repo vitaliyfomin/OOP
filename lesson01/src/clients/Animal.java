@@ -1,4 +1,4 @@
-package main.clients;
+package clients;
 
 import java.time.LocalDate;
 import java.util.logging.Logger;
