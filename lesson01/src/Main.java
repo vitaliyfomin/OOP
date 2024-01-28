@@ -53,11 +53,11 @@ abstract class Animal {
     abstract void makeSound();
 
     void sleep() {
-        actions.add(nickName + " sleeps.");
+        actions.add(nickName + " спит.");
     }
 
     void eat() {
-        actions.add(nickName + " eats.");
+        actions.add(nickName + " ест.");
     }
 
     void printInfo() {
@@ -101,17 +101,17 @@ class Cat extends Animal {
 
     @Override
     void move() {
-        actions.add("Cat moves.");
+        actions.add("Кошка двигается.");
         movementStatistics += 10;
     }
 
     @Override
     void makeSound() {
-        actions.add("Meow!");
+        actions.add("Мяу!");
     }
 
     void specialAction() {
-        actions.add("Cat purrs.");
+        actions.add("Кошка мурлычет.");
     }
 }
 
@@ -122,17 +122,17 @@ class Dog extends Animal {
 
     @Override
     void move() {
-        actions.add("Dog moves.");
+        actions.add("Собака двигается.");
         movementStatistics += 5;
     }
 
     @Override
     void makeSound() {
-        actions.add("Woof!");
+        actions.add("Гав!");
     }
 
     void specialAction() {
-        actions.add("Dog wags its tail.");
+        actions.add("Собака виляет хвостом.");
     }
 }
 
@@ -143,17 +143,17 @@ class Sparrow extends Animal {
 
     @Override
     void move() {
-        actions.add("Sparrow moves.");
+        actions.add("Воробей двигается.");
         movementStatistics += 20;
     }
 
     @Override
     void makeSound() {
-        actions.add("Chirp-chirp!");
+        actions.add("Чирик-чирик!");
     }
 
     void specialAction() {
-        actions.add("Sparrow flaps its wings.");
+        actions.add("Воробей машет крыльями.");
     }
 }
 
