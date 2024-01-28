@@ -2,6 +2,22 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+interface Walkable {
+    void toGo(int meters);
+}
+
+interface Flyable {
+    void fly(int meters);
+}
+
+interface Swimmable {
+    void swim(int meters);
+}
+
+interface Runnable {
+    void run(int meters);
+}
+
 class Owner {
     String fullName;
 
@@ -77,21 +93,13 @@ abstract class Animal {
         updateMovementStatistics(meters, "прошло " + meters + " метров");
     }
 
-    void fly(int meters) {
-        updateMovementStatistics(meters, "пролетело " + meters + " метров");
-    }
-
-    void swim(int meters) {
-        updateMovementStatistics(meters, "проплыло " + meters + " метров");
-    }
-
     protected void updateMovementStatistics(int meters, String action) {
         actions.add(String.format("Животное %s %s. Статистика подвижности: %d",
                 nickName, action, movementStatistics += meters));
     }
 }
 
-class Cat extends Animal {
+class Cat extends Animal implements Walkable {
     double discount;
 
     Cat(String nickName, Owner owner, LocalDate birthDate, Illness illness, int movementStatistics, double discount) {
@@ -113,9 +121,14 @@ class Cat extends Animal {
     void specialAction() {
         actions.add("Кошка мурлычет.");
     }
+
+    @Override
+    public void toGo(int meters) {
+        updateMovementStatistics(meters, "прошло " + meters + " метров");
+    }
 }
 
-class Dog extends Animal {
+class Dog extends Animal implements Walkable, Runnable {
     Dog(String nickName, Owner owner, LocalDate birthDate, Illness illness, int movementStatistics) {
         super(nickName, owner, birthDate, illness, movementStatistics);
     }
@@ -134,9 +147,19 @@ class Dog extends Animal {
     void specialAction() {
         actions.add("Собака виляет хвостом.");
     }
+
+    @Override
+    public void toGo(int meters) {
+        updateMovementStatistics(meters, "прошло " + meters + " метров");
+    }
+
+    @Override
+    public void run(int meters) {
+        updateMovementStatistics(meters, "пробежало " + meters + " метров");
+    }
 }
 
-class Sparrow extends Animal {
+class Sparrow extends Animal implements Flyable, Walkable {
     Sparrow(String nickName, Owner owner, LocalDate birthDate, Illness illness, int movementStatistics) {
         super(nickName, owner, birthDate, illness, movementStatistics);
     }
@@ -154,6 +177,16 @@ class Sparrow extends Animal {
 
     void specialAction() {
         actions.add("Воробей машет крыльями.");
+    }
+
+    @Override
+    public void fly(int meters) {
+        updateMovementStatistics(meters, "пролетело " + meters + " метров");
+    }
+
+    @Override
+    public void toGo(int meters) {
+        updateMovementStatistics(meters, "прошло " + meters + " метров");
     }
 }
 
@@ -176,27 +209,48 @@ public class Main {
         cat.sleep();
         cat.eat();
         cat.specialAction();
-        cat.toGo(5); // Пример вызова метода toGo
-        cat.fly(10); // Пример вызова метода fly
-        cat.swim(3); // Пример вызова метода swim
+        if (cat instanceof Walkable) {
+            ((Walkable) cat).toGo(5); // Пример вызова метода toGo
+        }
+        if (cat instanceof Flyable) {
+            ((Flyable) cat).fly(10); // Пример вызова метода fly
+        }
+        if (cat instanceof Swimmable) {
+            ((Swimmable) cat).swim(3); // Пример вызова метода swim
+        }
 
         dog.move();
         dog.makeSound();
         dog.sleep();
         dog.eat();
         dog.specialAction();
-        dog.toGo(8); // Пример вызова метода toGo
-        dog.fly(15); // Пример вызова метода fly
-        dog.swim(2); // Пример вызова метода swim
+        if (dog instanceof Walkable) {
+            ((Walkable) dog).toGo(8); // Пример вызова метода toGo
+        }
+        if (dog instanceof Flyable) {
+            ((Flyable) dog).fly(15); // Пример вызова метода fly
+        }
+        if (dog instanceof Swimmable) {
+            ((Swimmable) dog).swim(2); // Пример вызова метода swim
+        }
+        if (dog instanceof Runnable) {
+            ((Runnable) dog).run(10); // Пример вызова метода run
+        }
 
         sparrow.move();
         sparrow.makeSound();
         sparrow.sleep();
         sparrow.eat();
         sparrow.specialAction();
-        sparrow.toGo(15); // Пример вызова метода toGo
-        sparrow.fly(25); // Пример вызова метода fly
-        sparrow.swim(0); // Пример вызова метода swim
+        if (sparrow instanceof Walkable) {
+            ((Walkable) sparrow).toGo(15); // Пример вызова метода toGo
+        }
+        if (sparrow instanceof Flyable) {
+            ((Flyable) sparrow).fly(25); // Пример вызова метода fly
+        }
+        if (sparrow instanceof Swimmable) {
+            ((Swimmable) sparrow).swim(0); // Пример вызова метода swim
+        }
 
         // Print information at the end
         cat.printInfo();
