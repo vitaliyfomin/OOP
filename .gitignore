@@ -3,8 +3,8 @@
 !**/lesson01/.vscode/
 !**/out/
 !**/.idea/
-.gitignore
-.idea
+*.gitignore
+*.idea
 
 ### Eclipse ###
 .apt_generated
