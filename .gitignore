@@ -3,7 +3,7 @@ out/
 !**/lesson01/.vscode/
 !**/src/main/**/out/
 !**/src/test/**/out/
-!**/.idea/
+.idea
 .gitignore
 
 ### Eclipse ###
