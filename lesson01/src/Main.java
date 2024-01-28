@@ -102,7 +102,7 @@ abstract class Animal {
 class Cat extends Animal implements Walkable {
     double discount;
 
-    Cat(String nickName, Owner owner, LocalDate birthDate, Illness illness, int movementStatistics, double discount) {
+    Cat(String nickName, Owner owner, LocalDate birthDate, Illness illness, double discount, int movementStatistics) {
         super(nickName, owner, birthDate, illness, movementStatistics);
         this.discount = discount;
     }
@@ -194,7 +194,7 @@ public class Main {
     public static void main(String[] args) {
         Owner owner1 = new Owner("Сергей Валерьевич");
         Illness illness1 = new Illness("Лишай");
-        Cat cat = new Cat("Гав", owner1, LocalDate.parse("2021-10-03"), illness1, 10, 0.5);
+        Cat cat = new Cat("Гав", owner1, LocalDate.parse("2021-10-03"), illness1, 0.5, 10);
 
         Owner owner2 = new Owner("Алексей Максимович");
         Illness illness2 = new Illness("Лишай");
