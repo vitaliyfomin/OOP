@@ -1,13 +1,26 @@
 import java.time.LocalDate;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
+
+class Owner {
+    String fullName;
+
+    Owner(String fullName) {
+        this.fullName = fullName;
+    }
+
+    @Override
+    public String toString() {
+        return "Owner{" +
+                "fullName='" + fullName + '\'' +
+                '}';
+    }
+}
 
 class Illness {
-    private String title;
+    String title;
 
-    private Illness(String title) {
-        if (title == null) {
-            throw new IllegalArgumentException("Title cannot be null");
-        }
+    Illness(String title) {
         this.title = title;
     }
 
@@ -17,48 +30,17 @@ class Illness {
                 "title='" + title + '\'' +
                 '}';
     }
-
-    public static Illness createIllness(String title) {
-        return new Illness(title);
-    }
-}
-
-class Owner {
-    private String fullName;
-
-    private Owner(String fullName) {
-        if (fullName == null) {
-            throw new IllegalArgumentException("Full name cannot be null");
-        }
-        this.fullName = fullName;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    @Override
-    public String toString() {
-        return "Owner{" +
-                "fullName='" + fullName + '\'' +
-                '}';
-    }
-
-    public static Owner createOwner(String fullName) {
-        return new Owner(fullName);
-    }
 }
 
 abstract class Animal {
-    protected String nickName;
-    protected Owner owner;
-    protected LocalDate birthDate;
-    protected Illness illness;
-    protected double movementStatistics;
+    String nickName;
+    LocalDate birthDate;
+    Owner owner;
+    Illness illness;
+    int movementStatistics;
+    List<String> actions = new ArrayList<>();
 
-    protected static final Logger LOGGER = Logger.getLogger(Animal.class.getName());
-
-    public Animal(String nickName, Owner owner, LocalDate birthDate, Illness illness, double movementStatistics) {
+    Animal(String nickName, Owner owner, LocalDate birthDate, Illness illness, int movementStatistics) {
         this.nickName = nickName;
         this.owner = owner;
         this.birthDate = birthDate;
@@ -66,161 +48,163 @@ abstract class Animal {
         this.movementStatistics = movementStatistics;
     }
 
-    public abstract void toGo(double meters);
+    abstract void move();
 
-    public abstract void fly(double meters);
+    abstract void makeSound();
 
-    public abstract void swim(double meters);
+    void sleep() {
+        actions.add(nickName + " sleeps.");
+    }
+
+    void eat() {
+        actions.add(nickName + " eats.");
+    }
+
+    void printInfo() {
+        actions.add("Информация о " + getClass().getSimpleName() + ":");
+        actions.add("nickName='" + nickName + "', birthDate=" + birthDate +
+                ", owner=" + owner + ", illness=" + illness +
+                ", movementStatistics=" + movementStatistics);
+        actions.add("-------------------");
+    }
 
     @Override
     public String toString() {
-        return String.format("nickName='%s', birthDate=%s, owner=%s, illness=%s, movementStatistics=%.2f",
-                nickName, birthDate, owner, illness, movementStatistics);
+        return String.join("\n", actions);
+    }
+
+    void toGo(int meters) {
+        updateMovementStatistics(meters, "прошло " + meters + " метров");
+    }
+
+    void fly(int meters) {
+        updateMovementStatistics(meters, "пролетело " + meters + " метров");
+    }
+
+    void swim(int meters) {
+        updateMovementStatistics(meters, "проплыло " + meters + " метров");
+    }
+
+    protected void updateMovementStatistics(int meters, String action) {
+        actions.add(String.format("Животное %s %s. Статистика подвижности: %d",
+                nickName, action, movementStatistics += meters));
     }
 }
 
 class Cat extends Animal {
-    private double discount;
+    double discount;
 
-    public Cat(String nickName, Owner owner, LocalDate birthDate, Illness illness, double discount, double movementStatistics) {
+    Cat(String nickName, Owner owner, LocalDate birthDate, Illness illness, int movementStatistics, double discount) {
         super(nickName, owner, birthDate, illness, movementStatistics);
         this.discount = discount;
     }
 
-    public Cat() {
-        super("Кличка", Owner.createOwner("Хозяин"), LocalDate.now(), Illness.createIllness("Болеет"), 0);
-        this.discount = 10D;
-    }
-
-    public double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
-    public void meow() {
-        LOGGER.info("Мяяяу!");
+    @Override
+    void move() {
+        actions.add("Cat moves.");
+        movementStatistics += 10;
     }
 
     @Override
-    public void toGo(double meters) {
-        int result = (int) (movementStatistics += meters);
-        LOGGER.info(String.format("Котёнок по имени %s прошёл %.2f метров. Статистика подвижности: %d", nickName, meters, result));
+    void makeSound() {
+        actions.add("Meow!");
     }
 
-    @Override
-    public void fly(double meters) {
-        int result = (int) movementStatistics;
-        LOGGER.info(String.format("Котёнок по имени %s не может летать! Статистика подвижности: %d", nickName, result));
-    }
-
-    @Override
-    public void swim(double meters) {
-        int result = (int) movementStatistics;
-        LOGGER.info(String.format("Котёнок по имени %s не любит воду и никуда не поплыл! Статистика подвижности: %d", nickName, result));
-    }
-
-    @Override
-    public String toString() {
-        return super.toString() + ", discount=" + discount;
+    void specialAction() {
+        actions.add("Cat purrs.");
     }
 }
 
 class Dog extends Animal {
-    public Dog(String nickName, Owner owner, LocalDate birthDate, Illness illness, double movementStatistics) {
+    Dog(String nickName, Owner owner, LocalDate birthDate, Illness illness, int movementStatistics) {
         super(nickName, owner, birthDate, illness, movementStatistics);
     }
 
-    public Dog() {
-        super("Кличка", Owner.createOwner("Хозяин"), LocalDate.now(), Illness.createIllness("Болеет"), 0);
+    @Override
+    void move() {
+        actions.add("Dog moves.");
+        movementStatistics += 5;
     }
 
     @Override
-    public void toGo(double meters) {
-        int result = (int) (movementStatistics += meters);
-        LOGGER.info(String.format("Собака по имени %s прошла %.2f метров. Статистика подвижности: %d", nickName, meters, result));
+    void makeSound() {
+        actions.add("Woof!");
     }
 
-    @Override
-    public void fly(double meters) {
-        int result = (int) movementStatistics;
-        LOGGER.info(String.format("Собака по имени %s не может летать! Статистика подвижности: %d", nickName, result));
-    }
-
-    @Override
-    public void swim(double meters) {
-        int result = (int) (movementStatistics += meters);
-        LOGGER.info(String.format("Собака по имени %s проплыла %.2f метров. Статистика подвижности: %d", nickName, meters, result));
+    void specialAction() {
+        actions.add("Dog wags its tail.");
     }
 }
 
 class Sparrow extends Animal {
-    public Sparrow(String nickName, Owner owner, LocalDate birthDate, Illness illness, double movementStatistics) {
+    Sparrow(String nickName, Owner owner, LocalDate birthDate, Illness illness, int movementStatistics) {
         super(nickName, owner, birthDate, illness, movementStatistics);
     }
 
-    public Sparrow() {
-        super("Кличка", Owner.createOwner("Хозяин"), LocalDate.now(), Illness.createIllness("Болеет"), 0);
-    }
-
-    public void moveByJumping(double meters) {
-        int result = (int) (movementStatistics += meters);
-        LOGGER.info(String.format("Воробей по имени %s переместился прыжками на %.2f метров. Статистика подвижности: %d", nickName, meters, result));
+    @Override
+    void move() {
+        actions.add("Sparrow moves.");
+        movementStatistics += 20;
     }
 
     @Override
-    public void toGo(double meters) {
-        int result = (int) movementStatistics;
-        LOGGER.info(String.format("Воробей %s птица особенная, ходить не умеет, но может прыгать. Статистика подвижности: %d", nickName, result));
+    void makeSound() {
+        actions.add("Chirp-chirp!");
     }
 
-    @Override
-    public void fly(double meters) {
-        int result = (int) (movementStatistics += meters);
-        LOGGER.info(String.format("Воробей по имени %s пролетел %.2f метров. Статистика подвижности: %d", nickName, meters, result));
-    }
-
-    @Override
-    public void swim(double meters) {
-        int result = (int) (movementStatistics += meters);
-        LOGGER.info(String.format("Воробей по имени %s не плавает! Статистика подвижности: %d", nickName, result));
+    void specialAction() {
+        actions.add("Sparrow flaps its wings.");
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        Animal cat = new Cat("Гав", Owner.createOwner("Сергей Валерьевич"),
-                LocalDate.of(2021, 10, 3), Illness.createIllness("Лишай"), 0.5, 10);
+        Owner owner1 = new Owner("Сергей Валерьевич");
+        Illness illness1 = new Illness("Лишай");
+        Cat cat = new Cat("Гав", owner1, LocalDate.parse("2021-10-03"), illness1, 10, 0.5);
 
-        Animal dog = new Dog("Чаппи", Owner.createOwner("Алексей Максимович"),
-                LocalDate.of(2023, 10, 4), Illness.createIllness("Лишай"), 0);
+        Owner owner2 = new Owner("Алексей Максимович");
+        Illness illness2 = new Illness("Лишай");
+        Dog dog = new Dog("Чаппи", owner2, LocalDate.parse("2023-10-04"), illness2, 0);
 
-        System.out.println("Информация о коте:");
+        Owner owner3 = new Owner("Клавдия Петровна");
+        Illness illness3 = new Illness("Болят лапки");
+        Sparrow sparrow = new Sparrow("Облачко", owner3, LocalDate.parse("2023-10-04"), illness3, 0);
+
+        cat.move();
+        cat.makeSound();
+        cat.sleep();
+        cat.eat();
+        cat.specialAction();
+        cat.toGo(5); // Пример вызова метода toGo
+        cat.fly(10); // Пример вызова метода fly
+        cat.swim(3); // Пример вызова метода swim
+
+        dog.move();
+        dog.makeSound();
+        dog.sleep();
+        dog.eat();
+        dog.specialAction();
+        dog.toGo(8); // Пример вызова метода toGo
+        dog.fly(15); // Пример вызова метода fly
+        dog.swim(2); // Пример вызова метода swim
+
+        sparrow.move();
+        sparrow.makeSound();
+        sparrow.sleep();
+        sparrow.eat();
+        sparrow.specialAction();
+        sparrow.toGo(15); // Пример вызова метода toGo
+        sparrow.fly(25); // Пример вызова метода fly
+        sparrow.swim(0); // Пример вызова метода swim
+
+        // Print information at the end
+        cat.printInfo();
+        dog.printInfo();
+        sparrow.printInfo();
+
         System.out.println(cat);
-        cat.toGo(10);
-        cat.swim(5);
-        cat.fly(100);
-
-        System.out.println("\n-------------------\n");
-
-        System.out.println("Информация о собаке:");
         System.out.println(dog);
-        dog.toGo(10);
-        dog.fly(100);
-        dog.swim(3);
-
-        System.out.println("\n-------------------\n");
-
-        Sparrow sparrow = new Sparrow("Облачко", Owner.createOwner("Клавдия Петровна"),
-                LocalDate.of(2023, 10, 4), Illness.createIllness("Болят лапки"), 0);
-
-        System.out.println("Информация о воробье:");
         System.out.println(sparrow);
-        sparrow.fly(100);
-        sparrow.toGo(10);
-        sparrow.moveByJumping(50);
-        sparrow.swim(30);
     }
 }

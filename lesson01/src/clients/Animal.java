@@ -1,19 +1,18 @@
 package main.clients;
 
 import java.time.LocalDate;
+import java.util.logging.Logger;
 
 public class Animal {
 
-    // protected видно в классе и во всех наследниках
+    private static final Logger LOGGER = Logger.getLogger(Animal.class.getName());
+
     protected String nickName;
     protected Owner owner;
     protected LocalDate birthDate;
     protected Illness illness;
-
     protected int movementStatistics;
 
-
-    // Это пустой конструктор (по умолчанию)
     public Animal(String nickName, Owner owner, LocalDate birthDate, Illness illness, int movementStatistics) {
         this.nickName = nickName;
         this.owner = owner;
@@ -24,26 +23,6 @@ public class Animal {
 
     public Animal() {
         this("Кличка", new Owner("Хозяин"), LocalDate.now(), new Illness("Болеет"), 0);
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public Illness getIllness() {
-        return illness;
-    }
-
-    public void setIllness(Illness illness) {
-        this.illness = illness;
     }
 
     public void lifeCycle() {
@@ -58,46 +37,45 @@ public class Animal {
     }
 
     private void wakeUp(String time) {
-        System.out.println("Животное " + nickName + " проснулось в " + time);
-    }
-
-    public String getType() {
-        return getClass().getSimpleName();
+        LOGGER.info(String.format("Животное %s проснулось в %s", nickName, time));
     }
 
     private void hunt() {
-        System.out.println("Животное охотится!");
+        LOGGER.info("Животное охотится!");
     }
 
     private void eat() {
-        System.out.println("Животное ест!");
+        LOGGER.info("Животное ест!");
     }
 
     private void sleep() {
-        System.out.println("Животное уснуло!");
+        LOGGER.info("Животное уснуло!");
     }
 
+    protected void updateMovementStatistics(int meters, String action) {
+        LOGGER.info(String.format("Животное %s %s. Статистика подвижности: %d",
+                nickName, action, movementStatistics += meters));
+    }
 
     public void toGo(int meters) {
-        System.out.print("Животное (" + nickName + ") прошло " + meters + " метров. Статистика подвижности: ");
-        int result = movementStatistics = movementStatistics + meters;
-        System.out.println(result);
-    };
-
-    public void fly(int meters){
-        System.out.print("Животное (" + nickName + ") пролетело " + meters + " метров. Статистика подвижности: ");
-        int result = movementStatistics = movementStatistics + meters;
-        System.out.println(result);
+        updateMovementStatistics(meters, "прошло " + meters + " метров");
     }
 
-    public void swim(int meters){
-        System.out.print("Животное (" + nickName + ") проплыло " + meters + " метров. Статистика подвижности: ");
-        int result = movementStatistics = movementStatistics + meters;
-        System.out.println(result);
+    public void fly(int meters) {
+        updateMovementStatistics(meters, "пролетело " + meters + " метров");
+    }
+
+    public void swim(int meters) {
+        updateMovementStatistics(meters, "проплыло " + meters + " метров");
     }
 
     @Override
     public String toString() {
-        return String.format("nickName = %s, bd = %s, owner = %s, illness = %s, Movement statistics = %s ", nickName, birthDate, owner, illness, movementStatistics);
+        return String.format("nickName = %s, bd = %s, owner = %s, illness = %s, Movement statistics = %s ",
+                nickName, birthDate, owner, illness, movementStatistics);
+    }
+
+    public String getNickName() {
+        return nickName;
     }
 }
