@@ -1,9 +1,10 @@
 ### IntelliJ IDEA ###
 out/
-lesson01/.vscode/
+!**/lesson01/.vscode/
 !**/src/main/**/out/
 !**/src/test/**/out/
-.idea/
+!**/.idea/
+.gitignore
 
 ### Eclipse ###
 .apt_generated
