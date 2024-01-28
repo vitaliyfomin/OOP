@@ -24,7 +24,7 @@ public class Dog extends Animal {
     @Override
     public void swim(int meters) {
         if (meters < 0) {
-            throw new IllegalArgumentException("Meters cannot be negative");
+            throw new IllegalArgumentException("Метры не могут быть отрицательными");
         }
         int result = updateMovementStatistics(meters);
         LOGGER.log(Level.INFO, "Собака по имени {0} не плавает! Статистика подвижности: {1}", new Object[]{nickName, result});

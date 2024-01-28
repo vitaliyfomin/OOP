@@ -71,7 +71,7 @@ public class Animal {
 
     @Override
     public String toString() {
-        return String.format("nickName = %s, bd = %s, owner = %s, illness = %s, Movement statistics = %s ",
+        return String.format("nickName = %s, bd = %s, owner = %s, illness = %s, Статистика движений = %s ",
                 nickName, birthDate, owner, illness, movementStatistics);
     }
 

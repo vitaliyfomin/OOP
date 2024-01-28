@@ -17,7 +17,7 @@ public class Sparrow extends Animal {
 
     public void moveByJumping(int meters) {
         if (meters < 0) {
-            throw new IllegalArgumentException("Meters cannot be negative");
+            throw new IllegalArgumentException("Метры не могут иметь отрицательных значений");
         }
         int updatedStatistics = updateMovementStatistics(meters);
         LOGGER.log(Level.INFO, "Воробей по имени {0} переместилось прыжками на {1} метров. Статистика подвижности: {2}",
@@ -38,7 +38,7 @@ public class Sparrow extends Animal {
 
     private int updateMovementStatistics(int meters) {
         if (meters < 0) {
-            throw new IllegalArgumentException("Meters cannot be negative");
+            throw new IllegalArgumentException("Метры не могут иметь отрицательных значений");
         }
         return movementStatistics += meters;
     }
