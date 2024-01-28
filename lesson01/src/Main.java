@@ -5,7 +5,6 @@ import java.util.List;
 interface Walkable {
     void toGo(int meters);
 }
-
 interface Flyable {
     void fly(int meters);
 }
