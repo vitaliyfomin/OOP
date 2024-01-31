@@ -1,0 +1,3 @@
+interface Goable {
+    double run();
+}
