@@ -1,7 +1,11 @@
-public class FlyingAnimal2 implements Flyable {
+class FlyingAnimal2 implements Flyable, Goable {
     @Override
     public double fly() {
-        // Логика для получения скорости полета
         return 25.0;
+    }
+
+    @Override
+    public double run() {
+        return 15.0;
     }
 }

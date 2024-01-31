@@ -1,7 +1,11 @@
-public class SwimmingAnimal1 implements Swimable {
+class SwimmingAnimal1 implements Swimable, Goable {
     @Override
     public double swim() {
-        // Логика для получения скорости плавания
         return 5.0;
+    }
+
+    @Override
+    public double run() {
+        return 10.0;
     }
 }

@@ -1,4 +1,4 @@
-public class Doctor {
+class Doctor {
     // Состояние и поведение врача
     // ...
 }

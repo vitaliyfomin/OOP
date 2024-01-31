@@ -1,4 +1,4 @@
-public class Nurse {
+class Nurse {
     // Состояние и поведение медсестры
     // ...
 }
