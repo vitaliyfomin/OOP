@@ -36,4 +36,15 @@ public class VeterinaryClinic {
         nurses.add(nurse);
     }
 
+    public List<Goable> getAllRunningAnimals() {
+        return runningAnimals;
+    }
+
+    public List<Flyable> getAllFlyingAnimals() {
+        return flyingAnimals;
+    }
+
+    public List<Swimable> getAllSwimmingAnimals() {
+        return swimmingAnimals;
+    }
 }

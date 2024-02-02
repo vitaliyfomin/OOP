@@ -1,13 +1,13 @@
 public class FlyingAnimal implements Flyable, Goable {
     @Override
     public double fly() {
-        // Логика для получения скорости полета
+        System.out.println("Животное летит");
         return 20.0;
     }
 
     @Override
     public double run() {
-        // Логика для получения скорости бега
+        System.out.println("Животное бегает");
         return 15.0;
     }
 }
