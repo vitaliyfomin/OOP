@@ -1,3 +1,3 @@
-interface Swimable {
+public interface Swimable {
     double swim();
 }

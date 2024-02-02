@@ -1,3 +1,3 @@
-interface Flyable {
+public interface Flyable {
     double fly();
 }

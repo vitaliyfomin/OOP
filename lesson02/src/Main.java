@@ -1,31 +1,25 @@
-
 public class Main {
     public static void main(String[] args) {
-        Animal genericAnimal = new Animal();
-        FlyingAnimal1 bird1 = new FlyingAnimal1();
-        FlyingAnimal2 bird2 = new FlyingAnimal2();
-        SwimmingAnimal1 fish1 = new SwimmingAnimal1();
-        SwimmingAnimal2 fish2 = new SwimmingAnimal2();
+        VeterinaryClinic clinic = new VeterinaryClinic();
 
-        // Проверяем полиморфизм
-        genericAnimal.run();
-        genericAnimal.fly();
-        genericAnimal.swim();
+        // Добавление животных в клинику
+        clinic.addRunningAnimal(new RunningAnimal());
+        clinic.addFlyingAnimal(new Bird());
+        clinic.addSwimmingAnimal(new Fish());
 
-        bird1.run();
-        bird1.fly();
-        bird1.swim();
+        // Найм персонала
+        Doctor vet1 = new Doctor("Доктор Смит", 10);
+        Doctor vet2 = new Doctor("Доктор Маруся", 8);
+        Nurse nurse1 = new Nurse("Медсестра Люся", true);
+        Nurse nurse2 = new Nurse("Медсестра Марина" +
+                "" +
+                "" +
+                "", false);
 
-        bird2.run();
-        bird2.fly();
-        bird2.swim();
+        clinic.hireDoctor(vet1);
+        clinic.hireDoctor(vet2);
+        clinic.hireNurse(nurse1);
+        clinic.hireNurse(nurse2);
 
-        fish1.run();
-        fish1.fly();
-        fish1.swim();
-
-        fish2.run();
-        fish2.fly();
-        fish2.swim();
     }
 }
