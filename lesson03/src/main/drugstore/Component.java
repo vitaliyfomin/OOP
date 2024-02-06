@@ -11,13 +11,30 @@ public abstract class Component implements Comparable<Component> {
         this.power = power;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public int getPower() {
+        return power;
+    }
+
     @Override
     public String toString() {
-        return String.format("Заголовок = %s, доза = %s", title, power);
+        return "Component{" +
+                "title='" + title + '\'' +
+                ", weight=" + weight +
+                ", power=" + power +
+                '}';
     }
 
     @Override
     public int compareTo(Component o) {
-        return Integer.compare(this.power, o.power);
+        // Сравниваем компоненты по названию
+        return this.title.compareTo(o.getTitle());
     }
 }
