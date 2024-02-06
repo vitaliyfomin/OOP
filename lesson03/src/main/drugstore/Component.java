@@ -1,52 +1,49 @@
 package main.drugstore;
 
+import java.util.List;
+
 public abstract class Component implements Comparable<Component> {
+    private static int nextId = 1;
+    private int id;
     private String title;
     private Double weight;
     private int power;
 
-    // Конструктор без параметров
-    public Component() {
-        this.title = "";
-        this.weight = 0.0;
-        this.power = 0;
-    }
-
     // Конструктор с параметрами
     public Component(String title, Double weight, int power) {
+        this.id = nextId++;
         this.title = title;
         this.weight = weight;
         this.power = power;
     }
 
-    // Геттеры и сеттеры
-    public String getTitle() {
-        return title;
+    // Геттеры для id, title, weight и power
+    public int getId() {
+        return id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getTitle() {
+        return title;
     }
 
     public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
     public int getPower() {
         return power;
-    }
-
-    public void setPower(int power) {
-        this.power = power;
     }
 
     // Переопределение метода compareTo
     @Override
     public int compareTo(Component other) {
-        return Integer.compare(this.power, other.power);
+        // Сначала сравниваем названия компонент
+        int titleComparison = this.getTitle().compareTo(other.getTitle());
+        if (titleComparison != 0) {
+            return titleComparison;
+        }
+
+        // Если названия одинаковы, сравниваем силу компонент
+        return Integer.compare(this.getPower(), other.getPower());
     }
 }
