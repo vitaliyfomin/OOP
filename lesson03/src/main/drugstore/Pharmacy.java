@@ -13,6 +13,7 @@ public class Pharmacy implements Comparable<Pharmacy> {
 
     @Override
     public int compareTo(Pharmacy o) {
+        // Сравниваем аптеки по количеству лекарств в них
         return Integer.compare(this.components.size(), o.components.size());
     }
 
