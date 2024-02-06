@@ -1,8 +1,8 @@
 package main;
 
-import main.clients.*;
+import main.clients.Cat;
+import main.clients.Goable;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +12,8 @@ public class Main {
         List<Goable> list = new ArrayList<>();
 
         Cat cat = new Cat();
-        Cat cat2 = new Cat();
-
         list.add(cat);
-
 
         System.out.println(list);
     }
 }
-

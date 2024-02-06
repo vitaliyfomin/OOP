@@ -4,20 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Pharmacy implements Comparable<Pharmacy> {
+public class Pharmacy {
     private List<Component> components = new ArrayList<>();
 
     public void addComponents(Component... components) {
-        Collections.addAll(this.components, components);
-    }
-
-    @Override
-    public int compareTo(Pharmacy o) {
-        return Integer.compare(this.components.size(), o.components.size());
+        for (Component component : components) {
+            if (!this.components.contains(component)) {
+                this.components.add(component);
+            }
+        }
     }
 
     public void printSortedComponents() {
         Collections.sort(components);
-        System.out.println(components);
+        for (Component component : components) {
+            System.out.println(component);
+        }
     }
 }
