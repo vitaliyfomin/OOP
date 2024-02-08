@@ -1,3 +1,5 @@
+// однонаправленный список
+
 public class Main {
     public static void main(String[] args) {
         LinkedList.LinkedList list = new LinkedList.LinkedList(); // Используем полное имя класса
