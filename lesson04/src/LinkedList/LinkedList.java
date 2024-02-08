@@ -54,7 +54,7 @@ public class LinkedList {
         return current.value;
     }
 
-    private class Node {
+    private static class Node { // Добавляем static
         int value;
         Node next;
 
