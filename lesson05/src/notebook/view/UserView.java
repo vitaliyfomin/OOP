@@ -13,11 +13,25 @@ public class UserView {
         this.userController = userController;
     }
 
-    public void run(){
+    public void run() {
         Commands com;
 
         while (true) {
-            String command = prompt("Введите команду: ");
+            // Предоставление пользователю информацию о доступных командах.
+            System.out.println("Доступные команды:");
+            System.out.println("CREATE - создать пользователя");
+            System.out.println("READ - прочитать информацию о пользователе");
+            System.out.println("LIST - вывести список всех пользователей");
+            System.out.println("UPDATE - обновить информацию о пользователе");
+            System.out.println("DELETE - удалить пользователя");
+            System.out.println("EXIT - выйти из приложения");
+            String command = prompt("Введите команду: ").toUpperCase(); // Преобразование в верхний регистр
+            try {
+                com = Commands.valueOf(command);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Некорректная команда. Пожалуйста, введите снова.");
+                continue;
+            }
             com = Commands.valueOf(command);
             if (com == Commands.EXIT) return;
             switch (com) {
@@ -35,9 +49,28 @@ public class UserView {
                         throw new RuntimeException(e);
                     }
                     break;
-                case UPDATE:
-                    String userId = prompt("Enter user id: ");
-                    userController.updateUser(userId, createUser());
+
+
+                case UPDATE:// обработка выбора поля обновления и запроса нового значения
+                    String userId = prompt("Введите id пользователя: ");
+                    User updateUser = new User();
+                    String fieldToUpdate = promptUpdateField();
+                    switch (fieldToUpdate) {
+                        case "1":
+                            updateUser.setFirstName(prompt("Введите новое Имя: "));
+                            break;
+                        case "2":
+                            updateUser.setLastName(prompt("Введите новую Фамилию: "));
+                            break;
+                        case "3":
+                            updateUser.setPhone(prompt("Введите новый Телефон:: "));
+                            break;
+                        default:
+                            System.out.println("Некорректный выбор.");
+                            break;
+                    }
+                    userController.updateUser(userId, updateUser);
+                    break;
             }
         }
     }
@@ -48,10 +81,15 @@ public class UserView {
         return in.nextLine();
     }
 
-    private User createUser() {
-        String firstName = prompt("Имя: ");
-        String lastName = prompt("Фамилия: ");
-        String phone = prompt("Номер телефона: ");
-        return new User(firstName, lastName, phone);
+
+    private String promptUpdateField() { // Метод для выбора поля, которое пользователь хочет обновить
+        Scanner in = new Scanner(System.in);
+        System.out.println("Какое поле вы хотите обновить?");
+        System.out.println("1. Имя");
+        System.out.println("2. Фамилия");
+        System.out.println("3. Номер телефона");
+        System.out.print("Введите номер поля: ");
+        return in.nextLine();
     }
+
 }
