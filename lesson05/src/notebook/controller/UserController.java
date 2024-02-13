@@ -4,7 +4,6 @@ import notebook.model.User;
 import notebook.model.repository.GBRepository;
 
 import java.util.List;
-import java.util.Objects;
 
 public class UserController {
     private final GBRepository repository;
@@ -18,14 +17,8 @@ public class UserController {
     }
 
     public User readUser(Long userId) throws Exception {
-        List<User> users = repository.findAll();
-        for (User user : users) {
-            if (Objects.equals(user.getId(), userId)) {
-                return user;
-            }
-        }
-
-        throw new RuntimeException("User not found");
+        return repository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public List<User> readAll() {
@@ -35,5 +28,14 @@ public class UserController {
     public void updateUser(String userId, User update) {
         update.setId(Long.parseLong(userId));
         repository.update(Long.parseLong(userId), update);
+    }
+
+    // Метод для создания нового пользователя
+    public User createUser(String firstName, String lastName, String phone) {
+        return new User(firstName, lastName, phone);
+    }
+
+    public boolean deleteUser(Long id) {
+        return repository.delete(id);
     }
 }

@@ -1,18 +1,22 @@
 package notebook;
 
 import notebook.controller.UserController;
-import notebook.model.repository.GBRepository;
+import notebook.model.User;
 import notebook.model.repository.impl.UserRepository;
+import notebook.util.DBConnector;
 import notebook.view.UserView;
-
-import static notebook.util.DBConnector.createDB;
 
 public class Main {
     public static void main(String[] args) {
-        createDB();
-        GBRepository repository = new UserRepository();
-        UserController controller = new UserController(repository);
-        UserView view = new UserView(controller);
-        view.run();
+        DBConnector.createDB();
+        UserRepository userRepository = new UserRepository();
+        UserController userController = new UserController(userRepository);
+        UserView userView = new UserView(userController);
+        userView.run();
+
+        // Добавляем завершающий блок для сохранения данных перед выходом
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            userRepository.writeToFile();
+        }));
     }
 }

@@ -2,22 +2,20 @@ package notebook.view;
 
 import notebook.controller.UserController;
 import notebook.model.User;
-import notebook.util.Commands;
 
 import java.util.Scanner;
 
 public class UserView {
     private final UserController userController;
+    private final Scanner scanner;
 
     public UserView(UserController userController) {
         this.userController = userController;
+        this.scanner = new Scanner(System.in);
     }
 
     public void run() {
-        Commands com;
-
         while (true) {
-            // Предоставление пользователю информацию о доступных командах.
             System.out.println("Доступные команды:");
             System.out.println("CREATE - создать пользователя");
             System.out.println("READ - прочитать информацию о пользователе");
@@ -25,75 +23,123 @@ public class UserView {
             System.out.println("UPDATE - обновить информацию о пользователе");
             System.out.println("DELETE - удалить пользователя");
             System.out.println("EXIT - выйти из приложения");
-            String command = prompt("Введите команду: ").toUpperCase(); // Преобразование в верхний регистр
-            try {
-                com = Commands.valueOf(command);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Некорректная команда. Пожалуйста, введите снова.");
-                continue;
-            }
-            com = Commands.valueOf(command);
-            if (com == Commands.EXIT) return;
-            switch (com) {
-                case CREATE:
-                    User u = createUser();
-                    userController.saveUser(u);
+            String command = prompt("Введите команду: ").toUpperCase();
+            switch (command) {
+                case "CREATE":
+                    createUser();
                     break;
-                case READ:
-                    String id = prompt("Идентификатор пользователя: ");
-                    try {
-                        User user = userController.readUser(Long.parseLong(id));
-                        System.out.println(user);
-                        System.out.println();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
+                case "READ":
+                    readUser();
                     break;
-                case UPDATE:
-                    String userId = prompt("Введите id пользователя: ");
-                    User updateUser = new User("", "", ""); // Создание объекта с пустыми данными
-                    String fieldToUpdate = promptUpdateField();
-                    switch (fieldToUpdate) {
-                        case "1":
-                            updateUser.setFirstName(prompt("Enter new first name: "));
-                            break;
-                        case "2":
-                            updateUser.setLastName(prompt("Enter new last name: "));
-                            break;
-                        case "3":
-                            updateUser.setPhone(prompt("Enter new phone number: "));
-                            break;
-                        default:
-                            System.out.println("Некорректный выбор.");
-                            break;
-                    }
-                    userController.updateUser(userId, updateUser);
+                case "LIST":
+                    listUsers();
                     break;
+                case "UPDATE":
+                    updateUser();
+                    break;
+                case "DELETE":
+                    deleteUser();
+                    break;
+                case "EXIT":
+                    return;
+                default:
+                    System.out.println("Некорректная команда. Пожалуйста, попробуйте снова.");
             }
         }
     }
 
-    private String prompt(String message) {
-        Scanner in = new Scanner(System.in);
-        System.out.print(message);
-        return in.nextLine();
+    private void createUser() {
+        String firstName = prompt("Введите имя: ");
+        String lastName = prompt("Введите фамилию: ");
+        String phone = prompt("Введите номер телефона: ");
+        User user = userController.createUser(firstName, lastName, phone);
+        userController.saveUser(user);
+        System.out.println("Пользователь успешно создан.");
     }
 
-    private User createUser() {
-        String firstName = prompt("Имя: ");
-        String lastName = prompt("Фамилия: ");
-        String phone = prompt("Номер телефона: ");
-        return new User(firstName, lastName, phone);
+    private void readUser() {
+        long id;
+        try {
+            id = Long.parseLong(prompt("Введите идентификатор пользователя: "));
+            User user = userController.readUser(id);
+            System.out.println("Информация о пользователе:");
+            System.out.println(user);
+        } catch (NumberFormatException e) {
+            System.out.println("Некорректный формат идентификатора пользователя.");
+        } catch (RuntimeException e) {
+            System.out.println("Пользователь с указанным идентификатором не найден.");
+        } catch (Exception e) {
+            System.out.println("Произошла ошибка: " + e.getMessage());
+        }
+    }
+
+    private void listUsers() {
+        System.out.println("Список всех пользователей:");
+        userController.readAll().forEach(System.out::println);
+    }
+
+    private void updateUser() {
+        Long id;
+        try {
+            id = Long.parseLong(prompt("Введите идентификатор пользователя для обновления: "));
+            User existingUser = userController.readUser(id);
+            System.out.println("Текущая информация о пользователе:");
+            System.out.println(existingUser);
+
+            User update = new User(existingUser.getId(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.getPhone());
+
+            String fieldToUpdate = promptUpdateField();
+            switch (fieldToUpdate) {
+                case "1":
+                    update.setFirstName(prompt("Введите новое имя: "));
+                    break;
+                case "2":
+                    update.setLastName(prompt("Введите новую фамилию: "));
+                    break;
+                case "3":
+                    update.setPhone(prompt("Введите новый номер телефона: "));
+                    break;
+                default:
+                    System.out.println("Некорректный выбор.");
+                    return;
+            }
+            userController.updateUser(String.valueOf(id), update);
+            System.out.println("Информация о пользователе успешно обновлена.");
+        } catch (NumberFormatException e) {
+            System.out.println("Некорректный формат идентификатора пользователя.");
+        } catch (RuntimeException e) {
+            System.out.println("Пользователь с указанным идентификатором не найден.");
+        } catch (Exception e) {
+            System.out.println("Произошла ошибка: " + e.getMessage());
+        }
+    }
+
+    private void deleteUser() {
+        long id;
+        try {
+            id = Long.parseLong(prompt("Введите идентификатор пользователя для удаления: "));
+            if (userController.deleteUser(id)) {
+                System.out.println("Пользователь успешно удален.");
+            } else {
+                System.out.println("Пользователь с указанным идентификатором не найден.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Некорректный формат идентификатора пользователя.");
+        } catch (Exception e) {
+            System.out.println("Произошла ошибка: " + e.getMessage());
+        }
+    }
+
+    private String prompt(String message) {
+        System.out.print(message);
+        return scanner.nextLine();
     }
 
     private String promptUpdateField() {
-        Scanner in = new Scanner(System.in);
         System.out.println("Какое поле вы хотите обновить?");
         System.out.println("1. Имя");
         System.out.println("2. Фамилия");
         System.out.println("3. Номер телефона");
-        System.out.print("Введите номер поля: ");
-        return in.nextLine();
+        return prompt("Введите номер поля: ");
     }
-
 }
