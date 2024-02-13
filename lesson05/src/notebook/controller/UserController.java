@@ -18,7 +18,7 @@ public class UserController {
 
     public User readUser(Long userId) throws Exception {
         return repository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
     }
 
     public List<User> readAll() {

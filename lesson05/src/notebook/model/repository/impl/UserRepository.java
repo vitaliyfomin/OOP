@@ -80,7 +80,7 @@ public class UserRepository implements GBRepository {
                 writer.write(user.getId() + "," + user.getFirstName() + "," + user.getLastName() + "," + user.getPhone() + "\n");
             }
         } catch (IOException e) {
-            System.err.println("Failed to write to DB: " + e.getMessage());
+            System.err.println("Не удалось выполнить запись в базу данных: " + e.getMessage());
         }
     }
 }

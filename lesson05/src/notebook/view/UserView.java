@@ -62,20 +62,23 @@ public class UserView {
         try {
             id = Long.parseLong(prompt("Введите идентификатор пользователя: "));
             User user = userController.readUser(id);
-            System.out.println("Информация о пользователе:");
-            System.out.println(user);
+            if (user != null) {
+                System.out.println("Информация о пользователе:");
+                System.out.println(user);
+            } else {
+                System.out.println("Пользователь с указанным идентификатором не найден.");
+            }
         } catch (NumberFormatException e) {
             System.out.println("Некорректный формат идентификатора пользователя.");
-        } catch (RuntimeException e) {
-            System.out.println("Пользователь с указанным идентификатором не найден.");
         } catch (Exception e) {
-            System.out.println("Произошла ошибка: " + e.getMessage());
+            System.out.println("Произошла ошибка при чтении пользователя: " + e.getMessage());
         }
     }
 
     private void listUsers() {
         System.out.println("Список всех пользователей:");
-        userController.readAll().forEach(System.out::println);
+        userController.readAll().forEach(user -> System.out.printf("Имя: %s, Фамилия: %s, Телефон: %s%n",
+                user.getFirstName(), user.getLastName(), user.getPhone()));
     }
 
     private void updateUser() {
@@ -83,34 +86,36 @@ public class UserView {
         try {
             id = Long.parseLong(prompt("Введите идентификатор пользователя для обновления: "));
             User existingUser = userController.readUser(id);
-            System.out.println("Текущая информация о пользователе:");
-            System.out.println(existingUser);
+            if (existingUser != null) {
+                System.out.println("Текущая информация о пользователе:");
+                System.out.println(existingUser);
 
-            User update = new User(existingUser.getId(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.getPhone());
+                User update = new User(existingUser.getId(), existingUser.getFirstName(), existingUser.getLastName(), existingUser.getPhone());
 
-            String fieldToUpdate = promptUpdateField();
-            switch (fieldToUpdate) {
-                case "1":
-                    update.setFirstName(prompt("Введите новое имя: "));
-                    break;
-                case "2":
-                    update.setLastName(prompt("Введите новую фамилию: "));
-                    break;
-                case "3":
-                    update.setPhone(prompt("Введите новый номер телефона: "));
-                    break;
-                default:
-                    System.out.println("Некорректный выбор.");
-                    return;
+                String fieldToUpdate = promptUpdateField();
+                switch (fieldToUpdate) {
+                    case "1":
+                        update.setFirstName(prompt("Введите новое имя: "));
+                        break;
+                    case "2":
+                        update.setLastName(prompt("Введите новую фамилию: "));
+                        break;
+                    case "3":
+                        update.setPhone(prompt("Введите новый номер телефона: "));
+                        break;
+                    default:
+                        System.out.println("Некорректный выбор.");
+                        return;
+                }
+                userController.updateUser(String.valueOf(id), update);
+                System.out.println("Информация о пользователе успешно обновлена.");
+            } else {
+                System.out.println("Пользователь с указанным идентификатором не найден.");
             }
-            userController.updateUser(String.valueOf(id), update);
-            System.out.println("Информация о пользователе успешно обновлена.");
         } catch (NumberFormatException e) {
             System.out.println("Некорректный формат идентификатора пользователя.");
-        } catch (RuntimeException e) {
-            System.out.println("Пользователь с указанным идентификатором не найден.");
         } catch (Exception e) {
-            System.out.println("Произошла ошибка: " + e.getMessage());
+            System.out.println("Произошла ошибка при обновлении пользователя: " + e.getMessage());
         }
     }
 
@@ -125,8 +130,6 @@ public class UserView {
             }
         } catch (NumberFormatException e) {
             System.out.println("Некорректный формат идентификатора пользователя.");
-        } catch (Exception e) {
-            System.out.println("Произошла ошибка: " + e.getMessage());
         }
     }
 
