@@ -7,7 +7,7 @@ public class User {
         this.name = name;
     }
 
-    public String getName() {й
+    public String getName() {
         return name;
     }
 }
