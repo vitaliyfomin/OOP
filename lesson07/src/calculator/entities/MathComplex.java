@@ -1,13 +1,8 @@
 package calculator.entities;
 
 public class MathComplex {
-    private final double real;
-    private final double imag;
-
-    public MathComplex() {
-        this.real = 0;
-        this.imag = 0;
-    }
+    private double real;
+    private double imag;
 
     public MathComplex(double real, double imag) {
         this.real = real;
@@ -22,8 +17,8 @@ public class MathComplex {
         return imag;
     }
 
-    public MathComplex add(MathComplex other) {
-        return new MathComplex(this.real + other.real, this.imag + other.imag);
+    @Override
+    public String toString() {
+        return real + " + " + imag + "i";
     }
-
 }
