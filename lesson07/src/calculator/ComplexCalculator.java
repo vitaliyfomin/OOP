@@ -13,8 +13,4 @@ public class ComplexCalculator {
     public MathComplex calculate(MathComplex operand1, MathComplex operand2) {
         return strategy.execute(operand1, operand2);
     }
-
-    public ComplexOperationStrategy getStrategy() {
-        return strategy;
-    }
 }
