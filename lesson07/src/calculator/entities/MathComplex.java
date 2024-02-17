@@ -1,8 +1,8 @@
 package calculator.entities;
 
 public class MathComplex {
-    private double real;
-    private double imag;
+    private final double real;
+    private final double imag;
 
     public MathComplex() {
         this.real = 0;
@@ -26,5 +26,4 @@ public class MathComplex {
         return new MathComplex(this.real + other.real, this.imag + other.imag);
     }
 
-    // Реализуйте другие методы, такие как умножение, деление и т.д.
 }

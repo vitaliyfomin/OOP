@@ -1,9 +1,10 @@
 package calculator;
+
 import calculator.entities.MathComplex;
 import calculator.strategies.ComplexOperationStrategy;
 
 public class ComplexCalculator {
-    private ComplexOperationStrategy strategy;
+    private final ComplexOperationStrategy strategy;
 
     public ComplexCalculator(ComplexOperationStrategy strategy) {
         this.strategy = strategy;
@@ -13,7 +14,7 @@ public class ComplexCalculator {
         return strategy.execute(operand1, operand2);
     }
 
-    protected ComplexOperationStrategy getStrategy() {
+    public ComplexOperationStrategy getStrategy() {
         return strategy;
     }
 }
